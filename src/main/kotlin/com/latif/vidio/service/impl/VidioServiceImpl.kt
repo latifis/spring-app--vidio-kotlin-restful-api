@@ -150,14 +150,13 @@ class VidioServiceImpl (
     }
 
     override fun delete(id: Long): ResMessageDto<String> {
-        TODO("Not yet implemented")
-//        val checkId = vidioRepository.findById(id)
-//
-//        if(!checkId.isPresent)
-//            throw DataNotFoundException("ID Vidio Tidak Ada")
-//
-//        vidioRepository.deleteById(id)
-//
-//        return ResMessageDto()
+        val checkId = vidioRepository.findById(id)
+
+        if(!checkId.isPresent)
+            throw DataNotFoundException("ID Vidio Tidak Ada")
+
+        vidioRepository.deleteById(id)
+
+        return ResMessageDto()
     }
 }

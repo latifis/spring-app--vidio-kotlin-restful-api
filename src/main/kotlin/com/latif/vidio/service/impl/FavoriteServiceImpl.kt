@@ -113,14 +113,13 @@ class FavoriteServiceImpl (
     }
 
     override fun delete(id: Long): ResMessageDto<String> {
-        TODO("Not yet implemented")
-//        val checkId = favoriteRepository.findById(id)
-//
-//        if(!checkId.isPresent)
-//            throw DataNotFoundException("ID Favorite Tidak Ada")
-//
-//        vidioRepository.deleteById(id)
-//
-//        return ResMessageDto()
+        val checkId = favoriteRepository.findById(id)
+
+        if(!checkId.isPresent)
+            throw DataNotFoundException("ID Favorite Tidak Ada")
+
+        vidioRepository.deleteById(id)
+
+        return ResMessageDto()
     }
 }

@@ -77,14 +77,13 @@ class GenreServiceImpl (
     }
 
     override fun delete(id: Long): ResMessageDto<String> {
-        TODO("Not yet implemented")
-//        val checkId = genreRepository.findById(id)
-//
-//        if(!checkId.isPresent)
-//            throw DataNotFoundException("ID Genre Tidak Ada")
-//
-//        genreRepository.deleteById(id)
-//
-//        return ResMessageDto()
+        val checkId = genreRepository.findById(id)
+
+        if(!checkId.isPresent)
+            throw DataNotFoundException("ID Genre Tidak Ada")
+
+        genreRepository.deleteById(id)
+
+        return ResMessageDto()
     }
 }

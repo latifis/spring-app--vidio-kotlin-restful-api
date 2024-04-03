@@ -110,15 +110,14 @@ class UserServiceImpl (
     }
 
     override fun delete(id: Long): ResMessageDto<String> {
-        TODO("Not yet implemented")
-//        val checkId = userRepository.findById(id)
-//
-//        if(!checkId.isPresent)
-//            throw DataNotFoundException("ID Profile Tidak Ada")
-//
-//        userRepository.deleteById(id)
-//
-//        return ResMessageDto()
+        val checkId = userRepository.findById(id)
+
+        if(!checkId.isPresent)
+            throw DataNotFoundException("ID Profile Tidak Ada")
+
+        userRepository.deleteById(id)
+
+        return ResMessageDto()
     }
 
 }
