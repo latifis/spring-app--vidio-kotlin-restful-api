@@ -17,6 +17,10 @@ class AuthInterceptor (
     private val apiKey: String
 ) : HandlerInterceptor {
 
+    companion object {
+        var typeId: String? = null
+    }
+
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         val token = request.getHeader("token")
 
@@ -33,6 +37,15 @@ class AuthInterceptor (
 
         try {
             JWTGenerator().decodeJWT(token).get("id".toString()) ?: throw RuntimeException("Invalid Token")
+        } catch (e: ExpiredJwtException){
+            e.printStackTrace()
+            val body: ResMessageDto<String> = ResMessageDto("401", "Invalid Token", null)
+            internalServerError(body, response)
+            return false
+        }
+
+        try {
+            typeId = JWTGenerator().decodeJWT(token).get("idType".toString()) as? String ?: throw RuntimeException("Invalid Token")
         } catch (e: ExpiredJwtException){
             e.printStackTrace()
             val body: ResMessageDto<String> = ResMessageDto("401", "Invalid Token", null)

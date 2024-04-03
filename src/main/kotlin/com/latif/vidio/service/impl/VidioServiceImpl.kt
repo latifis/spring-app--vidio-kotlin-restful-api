@@ -1,5 +1,6 @@
 package com.latif.vidio.service.impl
 
+import com.latif.vidio.config.AuthInterceptor
 import com.latif.vidio.domain.dto.req.ReqVidioDto
 import com.latif.vidio.domain.dto.res.ResMessageDto
 import com.latif.vidio.domain.dto.res.ResVidioDto
@@ -8,6 +9,7 @@ import com.latif.vidio.domain.entity.TypeUserEntity
 import com.latif.vidio.domain.entity.VidioEntity
 import com.latif.vidio.exception.DataExist
 import com.latif.vidio.exception.DataNotFoundException
+import com.latif.vidio.exception.InvalidToken
 import com.latif.vidio.repository.GenreRepository
 import com.latif.vidio.repository.TypeUserRepository
 import com.latif.vidio.repository.VidioRepository
@@ -113,19 +115,35 @@ class VidioServiceImpl (
     }
 
     override fun list(): ResMessageDto<List<ResVidioDto>> {
-        val vidioList = vidioRepository.findAll()
+        val typeId = AuthInterceptor.typeId
+        val responseList = mutableListOf<ResVidioDto>()
 
-        val responseList = arrayListOf<ResVidioDto>()
-        for (vidio in vidioList){
-            val data = ResVidioDto(
-                nameVidio = vidio.nameVidio,
-                creatorVidio = vidio.creatorVidio,
-                typeId = vidio.typeId?.idType.toString(),
-                idGenre = vidio.idGenre?.idGenre,
-                dtAdded = vidio.dtAdded,
-                dtUpdated = vidio.dtUpdated
-            )
-            responseList.add(data)
+        if (typeId == "T0001") {
+            val vidioList = vidioRepository.findByTypeId(TypeUserEntity(idType = typeId))
+            for (vidio in vidioList) {
+                val data = ResVidioDto(
+                    nameVidio = vidio.nameVidio,
+                    creatorVidio = vidio.creatorVidio,
+                    typeId = vidio.typeId?.idType.toString(),
+                    idGenre = vidio.idGenre?.idGenre,
+                    dtAdded = vidio.dtAdded,
+                    dtUpdated = vidio.dtUpdated
+                )
+                responseList.add(data)
+            }
+        } else if (typeId == "T0002") {
+            val vidioList = vidioRepository.findAll()
+            for (vidio in vidioList) {
+                val data = ResVidioDto(
+                    nameVidio = vidio.nameVidio,
+                    creatorVidio = vidio.creatorVidio,
+                    typeId = vidio.typeId?.idType.toString(),
+                    idGenre = vidio.idGenre?.idGenre,
+                    dtAdded = vidio.dtAdded,
+                    dtUpdated = vidio.dtUpdated
+                )
+                responseList.add(data)
+            }
         }
 
         return ResMessageDto(data = responseList)
