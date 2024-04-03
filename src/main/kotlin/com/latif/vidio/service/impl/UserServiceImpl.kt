@@ -17,7 +17,7 @@ class UserServiceImpl (
     val userRepository: UserRepository,
     val typeUserRepository: TypeUserRepository
 ) : UserService {
-    override fun insert(req: ReqUserDto): ResMessageDto<ResUserDto> {
+    override fun insert(type: String?,req: ReqUserDto): ResMessageDto<ResUserDto> {
         val existingUsername = userRepository.findByUserName(req.userName)
         val existingEmail = userRepository.findByEmail(req.email)
 
@@ -29,10 +29,12 @@ class UserServiceImpl (
             throw DataExist("Username Profil Sudah Ada")
         } else {
 
-            var idType: TypeUserEntity? = TypeUserEntity(idType = "T0001")
+            var idType: TypeUserEntity? = null
 
-            if (req.idType != null){
-                idType = typeUserRepository.findById(req.idType).orElse(null)
+            if (type != null){
+                idType = typeUserRepository.findById(type).orElse(TypeUserEntity(idType = "T0001"))
+            } else {
+                idType = TypeUserEntity(idType = "T0001")
             }
 
             val insert = UserEntity(

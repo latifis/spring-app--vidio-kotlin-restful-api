@@ -17,9 +17,11 @@ class UserController (
     @PostMapping()
     fun insert(
         @Valid
-        @RequestBody req: ReqUserDto
+        @RequestBody req: ReqUserDto,
+//        @Valid
+        @RequestParam type: String? = null
     ): ResponseEntity<ResMessageDto<ResUserDto>> {
-        val response = userService.insert(req)
+        val response = userService.insert(type, req)
         return ResponseEntity.ok(response)
     }
 
