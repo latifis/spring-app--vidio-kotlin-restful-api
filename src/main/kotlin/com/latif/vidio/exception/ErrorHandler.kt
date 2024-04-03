@@ -3,6 +3,7 @@ package com.latif.vidio.exception
 import com.latif.vidio.domain.dto.res.ResMessageDto
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.MissingServletRequestParameterException
@@ -48,6 +49,15 @@ class ErrorHandler {
             message = exception.message.toString()
         )
         )
+    }
+
+    @ExceptionHandler(InvalidToken::class)
+    fun InvalidToken(exception: RuntimeException) : ResponseEntity<ResMessageDto<*>> {
+        exception.printStackTrace()
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResMessageDto<Any?>(
+            status = "F",
+            message = exception.message.toString()
+        ))
     }
 
 }
