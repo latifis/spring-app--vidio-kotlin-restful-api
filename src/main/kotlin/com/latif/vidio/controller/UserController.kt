@@ -32,4 +32,24 @@ class UserController (
         val response = userService.update(id, req)
         return ResponseEntity.ok(response)
     }
+
+    @GetMapping("/detail")
+    fun detail(
+        @RequestParam id: Long
+    ): ResponseEntity<ResMessageDto<ResUserDto>> {
+        val response = userService.detail(id)
+        return ResponseEntity.ok(response)
+    }
+
+    @GetMapping("/list")
+    fun list(): ResponseEntity<ResMessageDto<List<ResUserDto>>> {
+        val response = userService.list()
+        return ResponseEntity.ok(response)
+    }
+
+    @DeleteMapping("/delete")
+    fun delete(@RequestParam id: Long): ResponseEntity<ResMessageDto<String>> {
+        val res = userService.delete(id)
+        return ResponseEntity.ok(res)
+    }
 }

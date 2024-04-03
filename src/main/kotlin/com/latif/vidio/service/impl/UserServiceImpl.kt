@@ -77,7 +77,18 @@ class UserServiceImpl (
     }
 
     override fun detail(id: Long): ResMessageDto<ResUserDto> {
-        TODO("Not yet implemented")
+        val checkId = userRepository.findById(id)
+
+        if(!checkId.isPresent)
+            throw DataNotFoundException("ID Profile Tidak Ada")
+
+        val response = ResUserDto(
+            userName = checkId.get().userName,
+            email = checkId.get().email,
+            idType = checkId.get().idType?.idType.toString()
+        )
+
+        return ResMessageDto(data = response)
     }
 
     override fun list(): ResMessageDto<List<ResUserDto>> {
