@@ -8,6 +8,7 @@ import com.latif.vidio.domain.entity.GenreEntity
 import com.latif.vidio.domain.entity.TypeUserEntity
 import com.latif.vidio.domain.entity.VidioEntity
 import com.latif.vidio.exception.DataExist
+import com.latif.vidio.exception.DataNotFoundException
 import com.latif.vidio.repository.GenreRepository
 import com.latif.vidio.repository.TypeUserRepository
 import com.latif.vidio.repository.VidioRepository
@@ -63,7 +64,35 @@ class VidioServiceImpl (
     }
 
     override fun update(id: Long, req: ReqVidioDto): ResMessageDto<ResVidioDto> {
-        TODO("Not yet implemented")
+        val checkId = vidioRepository.findById(id)
+
+        if(!checkId.isPresent)
+            throw DataNotFoundException("ID Vidio Tidak Ada")
+
+        if (req.typeId != null){
+            checkId.get().typeId = typeUserRepository.findById(req.typeId).orElse(checkId.get().typeId)
+        }
+
+        if (req.idGenre != null){
+            checkId.get().idGenre = genreRepository.findById(req.idGenre).orElse(checkId.get().idGenre)
+        }
+
+        checkId.get().nameVidio = req.nameVidio
+        checkId.get().creatorVidio = req.creatorVidio
+        checkId.get().dtUpdated = Date()
+
+        val updateVidio = vidioRepository.save(checkId.get())
+
+        val resVidioDto = ResVidioDto(
+            nameVidio = updateVidio.nameVidio,
+            creatorVidio = updateVidio.creatorVidio,
+            typeId = updateVidio.typeId?.idType.toString(),
+            idGenre = updateVidio.idGenre?.idGenre,
+            dtAdded = updateVidio.dtAdded,
+            dtUpdated = updateVidio.dtUpdated
+        )
+
+        return ResMessageDto(data = resVidioDto)
     }
 
     override fun detail(id: Long): ResMessageDto<ResVidioDto> {
