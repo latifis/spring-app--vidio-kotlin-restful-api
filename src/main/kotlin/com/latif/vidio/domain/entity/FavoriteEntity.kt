@@ -9,14 +9,14 @@ data class FavoriteEntity(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "id_favorite")
+    @Column(name = "id_favorite")
     val idFavorite:Long? = null,
 
 //    @Column(name = "id_vidio")
 //    var idVidio: Long? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "idVidio")
+    @JoinColumn(name = "idVidio")
     var idVidio: VidioEntity? = null,
 
 //    @Column(name = "id_user")

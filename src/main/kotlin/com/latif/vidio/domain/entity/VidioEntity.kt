@@ -15,6 +15,9 @@ data class VidioEntity(
     @Column(name = "name_vidio")
     var nameVidio: String? = null,
 
+    @Column(name = "creator_vidio")
+    var creatorVidio: String? = null,
+
     @Column(name = "type_id")
     var typeId: String? = null,
 
@@ -22,7 +25,7 @@ data class VidioEntity(
 //    var idGenre: String? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id_genre")
+    @JoinColumn(name = "id_genre")
     var idGenre: GenreEntity? = null,
 
     @Column(name = "dt_added")

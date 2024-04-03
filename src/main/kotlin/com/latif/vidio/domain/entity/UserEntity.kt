@@ -24,7 +24,7 @@ data class UserEntity(
 //    var idType: String? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id_type")
+    @JoinColumn(name = "id_type")
     var idType: TypeUserEntity? = null,
 
     @OneToMany(mappedBy = "idUser", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
