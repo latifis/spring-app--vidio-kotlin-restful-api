@@ -8,6 +8,7 @@ import com.latif.vidio.domain.entity.GenreEntity
 import com.latif.vidio.domain.entity.TypeUserEntity
 import com.latif.vidio.domain.entity.UserEntity
 import com.latif.vidio.exception.DataExist
+import com.latif.vidio.exception.DataNotFoundException
 import com.latif.vidio.repository.GenreRepository
 import com.latif.vidio.service.GenreService
 import org.springframework.stereotype.Service
@@ -37,7 +38,18 @@ class GenreServiceImpl (
     }
 
     override fun update(id: Long, req: ReqGenreDto): ResMessageDto<ResGenreDto> {
-        TODO("Not yet implemented")
+        val checkId = genreRepository.findById(id)
+
+        if(!checkId.isPresent)
+            throw DataNotFoundException("ID Genre Tidak Ada")
+
+        checkId.get().genreName = req.genreName
+
+        val updateGenre= genreRepository.save(checkId.get())
+        val resGenreDto = ResGenreDto(
+            genreName = updateGenre.genreName
+        )
+        return ResMessageDto(data = resGenreDto)
     }
 
     override fun detail(id: Long): ResMessageDto<ResGenreDto> {

@@ -26,8 +26,8 @@ class GenreController (
     @PutMapping()
     fun update(
         @Valid
-        @RequestParam id: Long,
-        @RequestBody req: ReqGenreDto
+        @RequestBody req: ReqGenreDto,
+        @RequestParam id: Long
     ): ResponseEntity<ResMessageDto<ResGenreDto>> {
         val response = genreService.update(id, req)
         return ResponseEntity.ok(response)

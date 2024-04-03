@@ -26,8 +26,8 @@ class UserController (
     @PutMapping()
     fun update(
         @Valid
-        @RequestParam id: Long,
-        @RequestBody req: ReqUserDto
+        @RequestBody req: ReqUserDto,
+        @RequestParam id: Long
     ): ResponseEntity<ResMessageDto<ResUserDto>> {
         val response = userService.update(id, req)
         return ResponseEntity.ok(response)
