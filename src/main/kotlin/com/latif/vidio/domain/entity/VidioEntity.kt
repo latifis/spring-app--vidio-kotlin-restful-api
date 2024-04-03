@@ -18,8 +18,12 @@ data class VidioEntity(
     @Column(name = "creator_vidio")
     var creatorVidio: String? = null,
 
-    @Column(name = "type_id")
-    var typeId: String? = null,
+//    @Column(name = "type_id")
+//    var typeId: String? = null,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "type_id")
+    var typeId: TypeUserEntity? = null,
 
 //    @Column(name = "id_genre")
 //    var idGenre: String? = null,

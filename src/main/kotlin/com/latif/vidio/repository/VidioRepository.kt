@@ -4,4 +4,7 @@ import com.latif.vidio.domain.entity.VidioEntity
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface VidioRepository : JpaRepository<VidioEntity, Long> {
+
+    fun findByNameVidio(nameVidio: String?): VidioEntity?
+
 }
