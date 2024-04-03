@@ -6,6 +6,7 @@ import com.latif.vidio.domain.dto.res.ResUserDto
 import com.latif.vidio.domain.entity.TypeUserEntity
 import com.latif.vidio.domain.entity.UserEntity
 import com.latif.vidio.exception.DataExist
+import com.latif.vidio.exception.DataNotFoundException
 import com.latif.vidio.repository.TypeUserRepository
 import com.latif.vidio.repository.UserRepository
 import com.latif.vidio.service.UserService
@@ -53,7 +54,26 @@ class UserServiceImpl (
     }
 
     override fun update(id: Long, req: ReqUserDto): ResMessageDto<ResUserDto> {
-        TODO("Not yet implemented")
+        val checkId = userRepository.findById(id)
+
+        if(!checkId.isPresent)
+            throw DataNotFoundException("ID Profile Tidak Ada")
+
+        if (req.idType != null){
+            checkId.get().idType = typeUserRepository.findById(req.idType).orElse(null)
+        }
+
+        checkId.get().userName = req.userName
+        checkId.get().email = req.email
+        checkId.get().password = req.password
+
+        val updateProfile = userRepository.save(checkId.get())
+        val resProfileDto = ResUserDto(
+            userName = updateProfile.userName,
+            email = updateProfile.email,
+            idType = updateProfile.idType?.idType.toString()
+        )
+        return ResMessageDto(data = resProfileDto)
     }
 
     override fun detail(id: Long): ResMessageDto<ResUserDto> {

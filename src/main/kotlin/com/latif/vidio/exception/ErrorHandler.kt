@@ -22,6 +22,15 @@ class ErrorHandler {
         return ResponseEntity.badRequest().body(result)
     }
 
+    @ExceptionHandler(DataNotFoundException::class)
+    fun handleDataNotFound(exception: RuntimeException) : ResponseEntity<ResMessageDto<*>>{
+        exception.printStackTrace()
+        return ResponseEntity.badRequest().body(ResMessageDto<Any?>(
+            status = "F",
+            message = exception.message.toString()
+        ))
+    }
+
     @ExceptionHandler(DataExist::class)
     fun handleDataExist(exception: RuntimeException) : ResponseEntity<ResMessageDto<*>>{
         exception.printStackTrace()
