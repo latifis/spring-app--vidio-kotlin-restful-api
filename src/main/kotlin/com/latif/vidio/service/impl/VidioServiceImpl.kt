@@ -117,7 +117,7 @@ class VidioServiceImpl (
         return ResMessageDto(data = response)
     }
 
-    override fun list(): ResMessageDto<List<ResVidioDto>> {
+    override fun list(name: String?, creator: String?): ResMessageDto<List<ResVidioDto>> {
         val typeId = AuthInterceptor.typeId
         val responseList = mutableListOf<ResVidioDto>()
 
@@ -148,6 +148,27 @@ class VidioServiceImpl (
                 responseList.add(data)
             }
         }
+
+//        if (typeId == "T0001" || typeId == "T0002") {
+//            val vidioList = vidioRepository.findByTypeIdAndNameVidioContainingIgnoreCaseOrTypeIdAndCreatorVidioContainingIgnoreCase(
+//                TypeUserEntity(idType = typeId),
+//                name,
+//                TypeUserEntity(idType = typeId),
+//                creator
+//            )
+//
+//            for (vidio in vidioList) {
+//                val data = ResVidioDto(
+//                    nameVidio = vidio.nameVidio,
+//                    creatorVidio = vidio.creatorVidio,
+//                    typeId = vidio.typeId?.idType.toString(),
+//                    idGenre = vidio.idGenre?.idGenre,
+//                    dtAdded = vidio.dtAdded,
+//                    dtUpdated = vidio.dtUpdated
+//                )
+//                responseList.add(data)
+//            }
+//        }
 
         return ResMessageDto(data = responseList)
     }

@@ -43,8 +43,11 @@ class VidioController (
     }
 
     @GetMapping("/list")
-    fun list(): ResponseEntity<ResMessageDto<List<ResVidioDto>>> {
-        val response = vidioService.list()
+    fun list(
+        @RequestParam name: String? = null,
+        @RequestParam creator: String? = null
+    ): ResponseEntity<ResMessageDto<List<ResVidioDto>>> {
+        val response = vidioService.list(name, creator)
         return ResponseEntity.ok(response)
     }
 

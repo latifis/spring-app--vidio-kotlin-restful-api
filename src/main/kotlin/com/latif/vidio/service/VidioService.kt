@@ -12,7 +12,7 @@ interface VidioService {
 
     fun detail(id: Long): ResMessageDto<ResVidioDto>
 
-    fun list(): ResMessageDto<List<ResVidioDto>>
+    fun list(name: String?, creator: String?): ResMessageDto<List<ResVidioDto>>
 
     fun delete(id: Long): ResMessageDto<String>
 
