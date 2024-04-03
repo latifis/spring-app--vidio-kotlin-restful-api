@@ -9,12 +9,12 @@ data class GenreEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_genre")
-    val idGenre:String? = null,
+    val idGenre:Long? = null,
 
     @Column(name = "genre_name")
     var genreName:String? = null,
 
-    @OneToMany(mappedBy = "id_vidio", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idGenre", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var vidios: MutableList<VidioEntity> = mutableListOf()
 
 )

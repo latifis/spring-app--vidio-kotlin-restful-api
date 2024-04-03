@@ -13,7 +13,7 @@ data class TypeUserEntity(
     @Column(name = "type_user")
     var typeUser:String? = null,
 
-    @OneToMany(mappedBy = "id_type", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idType", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var users: MutableList<UserEntity> = mutableListOf()
 
 )

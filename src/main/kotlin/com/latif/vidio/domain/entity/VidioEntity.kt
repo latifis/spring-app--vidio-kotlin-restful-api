@@ -10,7 +10,7 @@ data class VidioEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_vidio")
-    val idVidio: String? = null,
+    val idVidio: Long? = null,
 
     @Column(name = "name_vidio")
     var nameVidio: String? = null,
@@ -18,8 +18,11 @@ data class VidioEntity(
     @Column(name = "type_id")
     var typeId: String? = null,
 
+//    @Column(name = "id_genre")
+//    var idGenre: String? = null,
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_genre")
+//    @JoinColumn(name = "id_genre")
     var idGenre: GenreEntity? = null,
 
     @Column(name = "dt_added")
@@ -28,7 +31,7 @@ data class VidioEntity(
     @Column(name = "dt_updated")
     var dtUpdated: Date? = null,
 
-    @OneToMany(mappedBy = "id_vidio", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    var vidios: MutableList<FavoriteEntity> = mutableListOf()
+    @OneToMany(mappedBy = "idVidio", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    var favorites: MutableList<FavoriteEntity> = mutableListOf()
 
 )

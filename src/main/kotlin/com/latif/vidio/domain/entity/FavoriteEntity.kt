@@ -9,15 +9,21 @@ data class FavoriteEntity(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_favorite")
-    val idFavorite:String? = null,
+//    @Column(name = "id_favorite")
+    val idFavorite:Long? = null,
+
+//    @Column(name = "id_vidio")
+//    var idVidio: Long? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_vidio")
+//    @JoinColumn(name = "idVidio")
     var idVidio: VidioEntity? = null,
 
+//    @Column(name = "id_user")
+//    var idUser: Long? = null,
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_user")
+    @JoinColumn(name = "idUser")
     var idUser: UserEntity? = null,
 
     //    @Temporal(TemporalType.TIMESTAMP)

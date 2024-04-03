@@ -9,7 +9,7 @@ data class UserEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
-    val idUser: String? = null,
+    val idUser: Long? = null,
 
     @Column(name = "user_name")
     var userName: String? = null,
@@ -20,11 +20,14 @@ data class UserEntity(
     @Column(name = "password")
     var password: String? = null,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_type")
-    var userType: TypeUserEntity? = null,
+//    @Column(name = "id_type")
+//    var idType: String? = null,
 
-    @OneToMany(mappedBy = "id_user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id_type")
+    var idType: TypeUserEntity? = null,
+
+    @OneToMany(mappedBy = "idUser", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var favorites: MutableList<FavoriteEntity> = mutableListOf()
 
 )
