@@ -92,7 +92,19 @@ class UserServiceImpl (
     }
 
     override fun list(): ResMessageDto<List<ResUserDto>> {
-        TODO("Not yet implemented")
+        val userList = userRepository.findAll()
+
+        val responseList = arrayListOf<ResUserDto>()
+        for (user in userList){
+            val data = ResUserDto(
+                userName = user.userName,
+                email = user.email,
+                idType = user.idType?.idType.toString()
+            )
+            responseList.add(data)
+        }
+
+        return ResMessageDto(data = responseList)
     }
 
     override fun delete(id: Long): ResMessageDto<String> {
