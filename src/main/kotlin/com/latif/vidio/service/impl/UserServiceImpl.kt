@@ -28,7 +28,7 @@ class UserServiceImpl (
             throw DataExist("Username Profil Sudah Ada")
         } else {
 
-            var idType: TypeUserEntity? = null
+            var idType: TypeUserEntity? = TypeUserEntity(idType = "T0001")
 
             if (req.idType != null){
                 idType = typeUserRepository.findById(req.idType).orElse(null)
@@ -46,7 +46,7 @@ class UserServiceImpl (
             val resProfileDto = ResUserDto(
                 userName = savedUser.userName,
                 email = savedUser.email,
-                idType = savedUser.idType.toString()
+                idType = savedUser.idType?.idType.toString()
             )
             return ResMessageDto(data = resProfileDto)
         }
