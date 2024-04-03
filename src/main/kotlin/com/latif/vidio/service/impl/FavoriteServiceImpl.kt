@@ -80,14 +80,47 @@ class FavoriteServiceImpl (
     }
 
     override fun detail(id: Long): ResMessageDto<ResFavoriteDto> {
-        TODO("Not yet implemented")
+        val checkId = favoriteRepository.findById(id)
+
+        if(!checkId.isPresent)
+            throw DataNotFoundException("ID Favorite Tidak Ada")
+
+        val response = ResFavoriteDto(
+            idUser = checkId.get().idUser?.idUser,
+            idVidio = checkId.get().idVidio?.idVidio,
+            dtAdded = checkId.get().dtAdded,
+            dtUpdated = checkId.get().dtUpdated
+        )
+
+        return ResMessageDto(data = response)
     }
 
     override fun list(): ResMessageDto<List<ResFavoriteDto>> {
-        TODO("Not yet implemented")
+        val favoriteList = favoriteRepository.findAll()
+
+        val responseList = arrayListOf<ResFavoriteDto>()
+        for (favorite in favoriteList){
+            val data = ResFavoriteDto(
+                idUser = favorite.idUser?.idUser,
+                idVidio = favorite.idVidio?.idVidio,
+                dtAdded = favorite.dtAdded,
+                dtUpdated = favorite.dtUpdated
+            )
+            responseList.add(data)
+        }
+
+        return ResMessageDto(data = responseList)
     }
 
     override fun delete(id: Long): ResMessageDto<String> {
         TODO("Not yet implemented")
+//        val checkId = favoriteRepository.findById(id)
+//
+//        if(!checkId.isPresent)
+//            throw DataNotFoundException("ID Favorite Tidak Ada")
+//
+//        vidioRepository.deleteById(id)
+//
+//        return ResMessageDto()
     }
 }

@@ -98,7 +98,7 @@ class VidioServiceImpl (
         val checkId = vidioRepository.findById(id)
 
         if(!checkId.isPresent)
-            throw DataNotFoundException("ID Genre Tidak Ada")
+            throw DataNotFoundException("ID Vidio Tidak Ada")
 
         val response = ResVidioDto(
             nameVidio = checkId.get().nameVidio,
