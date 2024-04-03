@@ -2,7 +2,6 @@ package com.latif.vidio.service.impl
 
 import com.latif.vidio.domain.dto.req.ReqVidioDto
 import com.latif.vidio.domain.dto.res.ResMessageDto
-import com.latif.vidio.domain.dto.res.ResUserDto
 import com.latif.vidio.domain.dto.res.ResVidioDto
 import com.latif.vidio.domain.entity.GenreEntity
 import com.latif.vidio.domain.entity.TypeUserEntity
@@ -96,14 +95,51 @@ class VidioServiceImpl (
     }
 
     override fun detail(id: Long): ResMessageDto<ResVidioDto> {
-        TODO("Not yet implemented")
+        val checkId = vidioRepository.findById(id)
+
+        if(!checkId.isPresent)
+            throw DataNotFoundException("ID Genre Tidak Ada")
+
+        val response = ResVidioDto(
+            nameVidio = checkId.get().nameVidio,
+            creatorVidio = checkId.get().creatorVidio,
+            typeId = checkId.get().typeId?.idType.toString(),
+            idGenre = checkId.get().idGenre?.idGenre,
+            dtAdded = checkId.get().dtAdded,
+            dtUpdated = checkId.get().dtUpdated
+        )
+
+        return ResMessageDto(data = response)
     }
 
     override fun list(): ResMessageDto<List<ResVidioDto>> {
-        TODO("Not yet implemented")
+        val vidioList = vidioRepository.findAll()
+
+        val responseList = arrayListOf<ResVidioDto>()
+        for (vidio in vidioList){
+            val data = ResVidioDto(
+                nameVidio = vidio.nameVidio,
+                creatorVidio = vidio.creatorVidio,
+                typeId = vidio.typeId?.idType.toString(),
+                idGenre = vidio.idGenre?.idGenre,
+                dtAdded = vidio.dtAdded,
+                dtUpdated = vidio.dtUpdated
+            )
+            responseList.add(data)
+        }
+
+        return ResMessageDto(data = responseList)
     }
 
     override fun delete(id: Long): ResMessageDto<String> {
         TODO("Not yet implemented")
+//        val checkId = vidioRepository.findById(id)
+//
+//        if(!checkId.isPresent)
+//            throw DataNotFoundException("ID Vidio Tidak Ada")
+//
+//        vidioRepository.deleteById(id)
+//
+//        return ResMessageDto()
     }
 }
