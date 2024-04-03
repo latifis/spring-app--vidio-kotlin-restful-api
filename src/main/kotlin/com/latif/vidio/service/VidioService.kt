@@ -6,7 +6,7 @@ import com.latif.vidio.domain.dto.res.ResVidioDto
 
 interface VidioService {
 
-    fun insert(req: ReqVidioDto): ResMessageDto<ResVidioDto>
+    fun insert(type: String?, req: ReqVidioDto): ResMessageDto<ResVidioDto>
 
     fun update(id: Long, req: ReqVidioDto): ResMessageDto<ResVidioDto>
 

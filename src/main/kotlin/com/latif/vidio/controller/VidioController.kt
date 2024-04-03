@@ -17,9 +17,10 @@ class VidioController (
     @PostMapping()
     fun insert(
         @Valid
-        @RequestBody req: ReqVidioDto
+        @RequestBody req: ReqVidioDto,
+        @RequestParam type: String? = null
     ): ResponseEntity<ResMessageDto<ResVidioDto>> {
-        val response = vidioService.insert(req)
+        val response = vidioService.insert(type, req)
         return ResponseEntity.ok(response)
     }
 

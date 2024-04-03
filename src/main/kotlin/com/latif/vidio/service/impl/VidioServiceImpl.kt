@@ -23,22 +23,25 @@ class VidioServiceImpl (
     val typeUserRepository: TypeUserRepository,
     val genreRepository: GenreRepository
 ) : VidioService {
-    override fun insert(req: ReqVidioDto): ResMessageDto<ResVidioDto> {
+    override fun insert(type: String?, req: ReqVidioDto): ResMessageDto<ResVidioDto> {
         val existingNameVidio = vidioRepository.findByNameVidio(req.nameVidio)
 
         if (existingNameVidio != null) {
             throw DataExist("Nama Vidio Sudah Ada")
         } else {
 
-            var idType: TypeUserEntity? = TypeUserEntity(idType = "T0001")
-            var idGenre: GenreEntity? = null
 
-            if (req.typeId != null) {
-                idType = typeUserRepository.findById(req.typeId).orElse(TypeUserEntity(idType = "T0001"))
-            }
+            var idType: TypeUserEntity? = null
+            var idGenre: GenreEntity? = null
 
             if (req.idGenre != null) {
                 idGenre = genreRepository.findById(req.idGenre).orElse(GenreEntity(idGenre = 1))
+            }
+
+            if (type != null){
+                idType = typeUserRepository.findById(type).orElse(TypeUserEntity(idType = "T0001"))
+            } else {
+                idType = TypeUserEntity(idType = "T0001")
             }
 
             val insert = VidioEntity(
