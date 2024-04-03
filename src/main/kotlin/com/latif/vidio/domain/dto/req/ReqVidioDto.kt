@@ -1,6 +1,7 @@
 package com.latif.vidio.domain.dto.req
 
 import jakarta.validation.constraints.NotBlank
+import org.jetbrains.annotations.NotNull
 import java.util.*
 
 data class ReqVidioDto(
@@ -13,12 +14,12 @@ data class ReqVidioDto(
 
     val typeId: String? = null,
 
-    @field:NotBlank(message = "Id Genre tidak boleh kosong")
-    var idGenre: Long,
+//    @field:NotNull
+    val idGenre: Long,
 
-    var dtAdded: Date? = null,
+    val dtAdded: Date? = null,
 
-    var dtUpdated: Date? = null
+    val dtUpdated: Date? = null
 
 )
 

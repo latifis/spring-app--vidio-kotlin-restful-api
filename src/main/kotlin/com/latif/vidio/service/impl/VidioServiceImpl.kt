@@ -4,6 +4,7 @@ import com.latif.vidio.domain.dto.req.ReqVidioDto
 import com.latif.vidio.domain.dto.res.ResMessageDto
 import com.latif.vidio.domain.dto.res.ResUserDto
 import com.latif.vidio.domain.dto.res.ResVidioDto
+import com.latif.vidio.domain.entity.GenreEntity
 import com.latif.vidio.domain.entity.TypeUserEntity
 import com.latif.vidio.domain.entity.VidioEntity
 import com.latif.vidio.exception.DataExist
@@ -11,7 +12,10 @@ import com.latif.vidio.repository.GenreRepository
 import com.latif.vidio.repository.TypeUserRepository
 import com.latif.vidio.repository.VidioRepository
 import com.latif.vidio.service.VidioService
+import org.springframework.stereotype.Service
+import java.util.*
 
+@Service
 class VidioServiceImpl (
     val vidioRepository: VidioRepository,
     val typeUserRepository: TypeUserRepository,
@@ -25,16 +29,23 @@ class VidioServiceImpl (
         } else {
 
             var idType: TypeUserEntity? = TypeUserEntity(idType = "T0001")
+            var idGenre: GenreEntity? = null
 
-            if (req.typeId != null){
-                idType = typeUserRepository.findById(req.typeId).orElse(null)
+            if (req.typeId != null) {
+                idType = typeUserRepository.findById(req.typeId).orElse(TypeUserEntity(idType = "T0001"))
+            }
+
+            if (req.idGenre != null) {
+                idGenre = genreRepository.findById(req.idGenre).orElse(GenreEntity(idGenre = 1))
             }
 
             val insert = VidioEntity(
                 nameVidio = req.nameVidio,
                 creatorVidio = req.creatorVidio,
                 typeId = idType,
-                idGenre = genreRepository.findById(req.idGenre).orElse(null)
+                idGenre = idGenre,
+                dtAdded = Date(),
+                dtUpdated = Date()
             )
 
             val savedVidio = vidioRepository.save(insert)
@@ -43,7 +54,9 @@ class VidioServiceImpl (
                 nameVidio = savedVidio.nameVidio,
                 creatorVidio = savedVidio.creatorVidio,
                 typeId = savedVidio.typeId?.idType.toString(),
-                idGenre = savedVidio.typeId?.idType.toString()
+                idGenre = savedVidio.idGenre?.idGenre,
+                dtAdded = savedVidio.dtAdded,
+                dtUpdated = savedVidio.dtUpdated
             )
             return ResMessageDto(data = resGenreDto)
         }
