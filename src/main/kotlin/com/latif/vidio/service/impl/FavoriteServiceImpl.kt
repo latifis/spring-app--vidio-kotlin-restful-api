@@ -5,6 +5,7 @@ import com.latif.vidio.domain.dto.res.ResFavoriteDto
 import com.latif.vidio.domain.dto.res.ResMessageDto
 import com.latif.vidio.domain.dto.res.ResVidioDto
 import com.latif.vidio.domain.entity.*
+import com.latif.vidio.exception.DataNotFoundException
 import com.latif.vidio.repository.FavoriteRepository
 import com.latif.vidio.repository.UserRepository
 import com.latif.vidio.repository.VidioRepository
@@ -51,7 +52,31 @@ class FavoriteServiceImpl (
     }
 
     override fun update(id: Long, req: ReqFavoriteDto): ResMessageDto<ResFavoriteDto> {
-        TODO("Not yet implemented")
+        val checkId = favoriteRepository.findById(id)
+
+        if(!checkId.isPresent)
+            throw DataNotFoundException("ID Favorite Tidak Ada")
+
+        if (req.idUser != null) {
+            checkId.get().idUser = userRepository.findById(req.idUser!!).orElse(checkId.get().idUser)
+        }
+
+        if (req.idVidio != null) {
+            checkId.get().idVidio = vidioRepository.findById(req.idVidio!!).orElse(checkId.get().idVidio)
+        }
+
+        checkId.get().dtUpdated = Date()
+
+        val updateFavorite = favoriteRepository.save(checkId.get())
+
+        val resFavoriteDto = ResFavoriteDto(
+            idUser = updateFavorite.idUser?.idUser,
+            idVidio = updateFavorite.idVidio?.idVidio,
+            dtAdded = updateFavorite.dtAdded,
+            dtUpdated = updateFavorite.dtUpdated
+        )
+
+        return ResMessageDto(data = resFavoriteDto)
     }
 
     override fun detail(id: Long): ResMessageDto<ResFavoriteDto> {
