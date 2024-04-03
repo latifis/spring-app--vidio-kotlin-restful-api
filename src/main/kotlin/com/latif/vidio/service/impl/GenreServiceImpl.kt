@@ -3,10 +3,7 @@ package com.latif.vidio.service.impl
 import com.latif.vidio.domain.dto.req.ReqGenreDto
 import com.latif.vidio.domain.dto.res.ResGenreDto
 import com.latif.vidio.domain.dto.res.ResMessageDto
-import com.latif.vidio.domain.dto.res.ResUserDto
 import com.latif.vidio.domain.entity.GenreEntity
-import com.latif.vidio.domain.entity.TypeUserEntity
-import com.latif.vidio.domain.entity.UserEntity
 import com.latif.vidio.exception.DataExist
 import com.latif.vidio.exception.DataNotFoundException
 import com.latif.vidio.repository.GenreRepository
@@ -53,14 +50,41 @@ class GenreServiceImpl (
     }
 
     override fun detail(id: Long): ResMessageDto<ResGenreDto> {
-        TODO("Not yet implemented")
+        val checkId = genreRepository.findById(id)
+
+        if(!checkId.isPresent)
+            throw DataNotFoundException("ID Genre Tidak Ada")
+
+        val response = ResGenreDto(
+            genreName = checkId.get().genreName
+        )
+
+        return ResMessageDto(data = response)
     }
 
     override fun list(): ResMessageDto<List<ResGenreDto>> {
-        TODO("Not yet implemented")
+        val genreList = genreRepository.findAll()
+
+        val responseList = arrayListOf<ResGenreDto>()
+        for (genre in genreList){
+            val data = ResGenreDto(
+                genreName = genre.genreName
+            )
+            responseList.add(data)
+        }
+
+        return ResMessageDto(data = responseList)
     }
 
     override fun delete(id: Long): ResMessageDto<String> {
         TODO("Not yet implemented")
+//        val checkId = genreRepository.findById(id)
+//
+//        if(!checkId.isPresent)
+//            throw DataNotFoundException("ID Genre Tidak Ada")
+//
+//        genreRepository.deleteById(id)
+//
+//        return ResMessageDto()
     }
 }
