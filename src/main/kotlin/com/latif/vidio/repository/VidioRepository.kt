@@ -10,11 +10,12 @@ interface VidioRepository : JpaRepository<VidioEntity, Long> {
 
     fun findByTypeId(typeId: TypeUserEntity?): List<VidioEntity>
 
-//    fun findByTypeIdAndNameVidioContainingIgnoreCaseOrTypeIdAndCreatorVidioContainingIgnoreCase(
-//        typeId1: TypeUserEntity,
-//        nameVidio: String?,
-//        typeId2: TypeUserEntity,
-//        creatorVidio: String?
-//    ): List<VidioEntity>
+    fun findByTypeIdAndNameVidioContainingIgnoreCase(typeId: TypeUserEntity, name: String): List<VidioEntity>
+
+    fun findByTypeIdAndCreatorVidioContainingIgnoreCase(typeId: TypeUserEntity, creator: String): List<VidioEntity>
+
+    fun findByNameVidioContainingIgnoreCase(name: String): List<VidioEntity>
+
+    fun findByCreatorVidioContainingIgnoreCase(creator: String): List<VidioEntity>
 
 }

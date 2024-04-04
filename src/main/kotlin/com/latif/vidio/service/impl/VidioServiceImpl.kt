@@ -121,21 +121,27 @@ class VidioServiceImpl (
         val typeId = AuthInterceptor.typeId
         val responseList = mutableListOf<ResVidioDto>()
 
-        if (typeId == "T0001") {
-            val vidioList = vidioRepository.findByTypeId(TypeUserEntity(idType = typeId))
-            for (vidio in vidioList) {
-                val data = ResVidioDto(
-                    nameVidio = vidio.nameVidio,
-                    creatorVidio = vidio.creatorVidio,
-                    typeId = vidio.typeId?.idType.toString(),
-                    idGenre = vidio.idGenre?.idGenre,
-                    dtAdded = vidio.dtAdded,
-                    dtUpdated = vidio.dtUpdated
-                )
-                responseList.add(data)
+        if (typeId == "T0001" || typeId == "T0002") {
+            val vidioList = if (name != null) {
+                if (typeId == "T0001") {
+                    vidioRepository.findByTypeIdAndNameVidioContainingIgnoreCase(TypeUserEntity(idType = typeId), name)
+                } else { // typeId == "T0002"
+                    vidioRepository.findByNameVidioContainingIgnoreCase(name)
+                }
+            } else if (creator != null) {
+                if (typeId == "T0001") {
+                    vidioRepository.findByTypeIdAndCreatorVidioContainingIgnoreCase(TypeUserEntity(idType = typeId), creator)
+                } else { // typeId == "T0002"
+                    vidioRepository.findByCreatorVidioContainingIgnoreCase(creator)
+                }
+            } else {
+                if (typeId == "T0001") {
+                    vidioRepository.findByTypeId(TypeUserEntity(idType = typeId))
+                } else { // typeId == "T0002"
+                    vidioRepository.findAll()
+                }
             }
-        } else if (typeId == "T0002") {
-            val vidioList = vidioRepository.findAll()
+
             for (vidio in vidioList) {
                 val data = ResVidioDto(
                     nameVidio = vidio.nameVidio,
@@ -148,27 +154,6 @@ class VidioServiceImpl (
                 responseList.add(data)
             }
         }
-
-//        if (typeId == "T0001" || typeId == "T0002") {
-//            val vidioList = vidioRepository.findByTypeIdAndNameVidioContainingIgnoreCaseOrTypeIdAndCreatorVidioContainingIgnoreCase(
-//                TypeUserEntity(idType = typeId),
-//                name,
-//                TypeUserEntity(idType = typeId),
-//                creator
-//            )
-//
-//            for (vidio in vidioList) {
-//                val data = ResVidioDto(
-//                    nameVidio = vidio.nameVidio,
-//                    creatorVidio = vidio.creatorVidio,
-//                    typeId = vidio.typeId?.idType.toString(),
-//                    idGenre = vidio.idGenre?.idGenre,
-//                    dtAdded = vidio.dtAdded,
-//                    dtUpdated = vidio.dtUpdated
-//                )
-//                responseList.add(data)
-//            }
-//        }
 
         return ResMessageDto(data = responseList)
     }
