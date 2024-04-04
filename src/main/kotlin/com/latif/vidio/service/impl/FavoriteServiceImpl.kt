@@ -92,9 +92,12 @@ class FavoriteServiceImpl (
     }
 
     override fun list(): ResMessageDto<List<ResFavoriteDto>> {
-        val favoriteList = favoriteRepository.findAll()
+
+        val idUser = AuthInterceptor.userId
+        val favoriteList = favoriteRepository.findByIdUser(UserEntity(idUser = idUser))
 
         val responseList = arrayListOf<ResFavoriteDto>()
+
         for (favorite in favoriteList){
             val data = ResFavoriteDto(
                 idUser = favorite.idUser?.idUser,
