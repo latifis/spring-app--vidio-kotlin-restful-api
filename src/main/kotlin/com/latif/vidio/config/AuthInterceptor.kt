@@ -19,6 +19,7 @@ class AuthInterceptor (
 
     companion object {
         var typeId: String? = null
+        var userId: Long? = null
     }
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
@@ -36,18 +37,10 @@ class AuthInterceptor (
 
 
         try {
-            JWTGenerator().decodeJWT(token).get("id".toString()) ?: throw RuntimeException("Invalid Token")
+            val decodedToken = JWTGenerator().decodeJWT(token)
+            userId = decodedToken.get("id")?.toString()?.toLongOrNull()
+            typeId = decodedToken.get("idType")?.toString()
         } catch (e: ExpiredJwtException){
-            e.printStackTrace()
-            val body: ResMessageDto<String> = ResMessageDto("401", "Invalid Token", null)
-            internalServerError(body, response)
-            return false
-        }
-
-        try {
-            typeId = JWTGenerator().decodeJWT(token).get("idType".toString()) as? String ?: throw RuntimeException("Invalid Token")
-        } catch (e: ExpiredJwtException){
-            e.printStackTrace()
             val body: ResMessageDto<String> = ResMessageDto("401", "Invalid Token", null)
             internalServerError(body, response)
             return false

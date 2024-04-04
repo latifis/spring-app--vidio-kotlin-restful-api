@@ -1,5 +1,6 @@
 package com.latif.vidio.service.impl
 
+import com.latif.vidio.config.AuthInterceptor
 import com.latif.vidio.domain.dto.req.ReqFavoriteDto
 import com.latif.vidio.domain.dto.res.ResFavoriteDto
 import com.latif.vidio.domain.dto.res.ResMessageDto
@@ -22,19 +23,14 @@ class FavoriteServiceImpl (
 
     override fun insert(req: ReqFavoriteDto): ResMessageDto<ResFavoriteDto> {
 
-        var idUser: UserEntity? = UserEntity(idUser = 1)
         var idVidio: VidioEntity? = VidioEntity(idVidio = 1)
-
-        if (req.idUser != null) {
-            idUser = userRepository.findById(req.idUser!!).orElse(UserEntity(idUser = 1))
-        }
 
         if (req.idVidio != null) {
             idVidio = vidioRepository.findById(req.idVidio!!).orElse(VidioEntity(idVidio = 1))
         }
 
         val insert = FavoriteEntity(
-            idUser = idUser,
+            idUser = UserEntity(idUser = AuthInterceptor.userId),
             idVidio = idVidio,
             dtAdded = Date(),
             dtUpdated = Date()
