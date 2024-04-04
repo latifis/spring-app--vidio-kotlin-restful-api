@@ -10,6 +10,7 @@ import com.latif.vidio.exception.DataNotFoundException
 import com.latif.vidio.repository.TypeUserRepository
 import com.latif.vidio.repository.UserRepository
 import com.latif.vidio.service.UserService
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
@@ -37,10 +38,12 @@ class UserServiceImpl (
                 idType = TypeUserEntity(idType = "T0001")
             }
 
+            val passwordEncoder = BCryptPasswordEncoder()
+
             val insert = UserEntity(
                 userName = req.userName,
                 email = req.email,
-                password = req.password,
+                password = passwordEncoder.encode(req.password),
                 idType = idType
             )
 

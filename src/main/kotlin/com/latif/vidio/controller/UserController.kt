@@ -14,7 +14,7 @@ class UserController (
     val userService: UserService
 ){
 
-    @PostMapping()
+    @PostMapping("register")
     fun insert(
         @Valid
         @RequestBody req: ReqUserDto,
